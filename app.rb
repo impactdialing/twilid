@@ -20,9 +20,9 @@ post '/*' do
 
   pool     = (1..100).to_a
   template = :dial_success
-  if pool.sample == 1
-    template = :dial_error
-  end
+  #if pool.sample == 1
+  #  template = :dial_error
+  #end
   erb template
 end
 
