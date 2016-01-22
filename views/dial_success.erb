@@ -1,0 +1,32 @@
+<%
+  payload = {
+    "parent_call_sid" => nil,
+    "account_sid" => "AC211da899fe0c76480ff2fc4ad2bbdc79",
+    "to_formatted" => "(267) 843-4742",
+    "from" => "+15005550006",
+    "from_formatted" => "(500) 555-0006",
+    "phone_number_sid" => nil,
+    "status" => "queued",
+    "start_time" => nil,
+    "end_time" => nil,
+    "duration" => nil,
+    "price" => nil,
+    "price_unit" => "USD",
+    "direction" => nil,
+    "answered_by" => nil,
+    "api_version" => "2010-04-01",
+    "annotation" => nil,
+    "forwarded_from" => nil,
+    "group_sid" => nil,
+    "caller_name" => nil,
+  } 
+
+  payload['sid']          = "CA#{@uuid.generate.gsub('-','')}"
+  payload['date_created'] = @time
+  payload['date_updated'] = @time
+  payload['to']           = @to
+  payload['from']         = @from
+  payload['uri']          = "/2010-04-01/Accounts/#{payload['account_sid']}/Calls/#{payload['sid']}.json"
+%>
+
+<%= payload.to_json %>
