@@ -2,7 +2,7 @@ require 'tilt/erb'
 require 'sinatra'
 require 'puma'
 require 'yajl/json_gem'
-require 'uuid'
+require_relative 'lib/dials'
 
 configure do
   set :server, :puma
@@ -16,8 +16,8 @@ post '/*' do
   @url             = params[:Url]
   @status_callback = params[:StatusCallback]
   @fallback        = params[:FallbackUrl]
-  @uuid            = UUID.new
   @time            = Time.now.utc.strftime('%a, %d %b %Y %H:%I:%S %z')
+  @sid             = Dials.sid_for params[:phone]
 
   pool     = (1..100).to_a
   template = :dial_success
@@ -28,5 +28,5 @@ post '/*' do
 end
 
 get '/*' do
-  '{}'
+  "{\"code\":#{Dials.data.keys.size.to_s}}"
 end

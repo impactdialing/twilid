@@ -2,9 +2,9 @@
   payload = {
     "parent_call_sid" => nil,
     "account_sid" => "AC211da899fe0c76480ff2fc4ad2bbdc79",
-    "to_formatted" => "(267) 843-4742",
-    "from" => "+15005550006",
-    "from_formatted" => "(500) 555-0006",
+    "to_formatted" => @to,
+    "from" => @from,
+    "from_formatted" => @from,
     "phone_number_sid" => nil,
     "status" => "queued",
     "start_time" => nil,
@@ -21,7 +21,7 @@
     "caller_name" => nil,
   } 
 
-  payload['sid']          = "CA#{@uuid.generate.gsub('-','')}"
+  payload['sid']          = @sid
   payload['date_created'] = @time
   payload['date_updated'] = @time
   payload['to']           = @to
