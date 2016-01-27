@@ -17,16 +17,21 @@ post '/*' do
   @status_callback = params[:StatusCallback]
   @fallback        = params[:FallbackUrl]
   @time            = Time.now.utc.strftime('%a, %d %b %Y %H:%I:%S %z')
-  @sid             = Dials.sid_for params[:phone]
+  @sid             = Dials.sid_for params[:To]
 
   pool     = (1..100).to_a
   template = :dial_success
   #if pool.sample == 1
   #  template = :dial_error
   #end
+  p "SID[#{@sid}] Phone[#{@to}]"
   erb template
 end
 
 get '/*' do
-  "{\"code\":#{Dials.data.keys.size.to_s}}"
+  if params[:phone]
+    Dials.sid_for(params[:phone])
+  else
+    "{\"code\":#{Dials.data.keys.size.to_s}}"
+  end
 end
