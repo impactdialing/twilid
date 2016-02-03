@@ -30,7 +30,7 @@ post '/*' do
   erb template
 end
 
-get '/Calls/:sid' do
+get '/2010-04-01/Accounts/AC422d17e57a30598f8120ee67feae29cd/Calls/:sid' do
   builder do |xml|
     xml.instruct!
     xml.TwilioResponse do
