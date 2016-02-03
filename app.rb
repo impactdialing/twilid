@@ -1,4 +1,5 @@
 require 'tilt/erb'
+require 'tilt/builder'
 require 'sinatra'
 require 'puma'
 require 'yajl/json_gem'
