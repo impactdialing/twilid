@@ -8,6 +8,14 @@ class Dials
   def self.busy_sid
     'CA33F5C5261BD94898A8680074701AB674'
   end
+  
+  def self.account_sid
+    'AC422d17e57a30598f8120ee67feae29cd'
+  end
+
+  def self.from
+    '5557891234'
+  end
 
   def self.data
     return @data if defined?(@data)
@@ -32,6 +40,12 @@ class Dials
   end
 
   def self.sid_for(phone)
-    data[phone]
+    sid = data[phone]
+    sid.nil? ? busy_sid : sid
+  end
+
+  def self.phone_for(sid)
+    target = data.find{|phone,_sid| _sid == sid}
+    target.nil? ? busy_phone : target.first
   end
 end

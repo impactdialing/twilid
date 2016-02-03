@@ -8,7 +8,9 @@ configure do
   set :server, :puma
 end
 
+
 post '/*' do
+  @account_sid     = Dials.account_sid
   @to              = params[:To]
   @from            = params[:From]
   @campaign_type   = params[:campaign_type]
@@ -28,7 +30,24 @@ post '/*' do
   erb template
 end
 
-get '/*' do
+get '/Calls/:sid' do
+  builder do |xml|
+    xml.instruct!
+    xml.TwilioResponse do
+      xml.Call do
+        xml.Sid params[:sid]
+        xml.AccountSid Dials.account_sid
+        xml.To Dials.phone_for(params[:sid])
+        xml.From Dials.from
+        xml.PhoneNumberSid ''
+        xml.Status 'completed'
+        xml.Duration rand(100).to_i
+      end
+    end
+  end
+end
+
+get '/' do
   if params[:phone]
     Dials.sid_for(params[:phone])
   else
