@@ -40,7 +40,7 @@ get '/2010-04-01/Accounts/AC422d17e57a30598f8120ee67feae29cd/Calls/:sid' do
         xml.AccountSid Dials.account_sid
         xml.To Dials.phone_for(params[:sid])
         xml.From Dials.from
-        xml.PhoneNumberSid ''
+        xml.PhoneNumberSid 'PH123abc'
         xml.Status 'completed'
         xml.Duration rand(100).to_i
       end
