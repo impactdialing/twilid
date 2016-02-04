@@ -11,16 +11,15 @@ end
 
 
 post '/*' do
-  @account_sid     = Dials.account_sid
   @to              = params[:To]
   @from            = params[:From]
-  @campaign_type   = params[:campaign_type]
-  @campaign_id     = params[:campaign_id]
   @url             = params[:Url]
   @status_callback = params[:StatusCallback]
   @fallback        = params[:FallbackUrl]
+  @account_sid     = Dials.account_sid
   @time            = Time.now.utc.strftime('%a, %d %b %Y %H:%I:%S %z')
-  @sid             = Dials.sid_for params[:To]
+
+  @sid             = Dials.sid_for @url, params[:To]
 
   pool     = (1..100).to_a
   template = :dial_success

@@ -1,4 +1,5 @@
 require 'csv'
+require 'uri'
 
 class Dials
   def self.busy_phone
@@ -20,9 +21,7 @@ class Dials
   def self.data
     return @data if defined?(@data)
 
-    data = {
-      busy_phone => busy_sid
-    }
+    data = {}
 
     path = File.join(File.dirname(__FILE__), '..', 'data')
     glob = File.join path, 'dials*.csv'
@@ -31,21 +30,40 @@ class Dials
         headers: true,
         return_headers: false
       }) do |row|
-        # 0 => phone
-        # 1 => sid
-        data[row[0]] = row[1]
+        # sid_for
+        # 0 => campaign_id
+        # 1 => phone
+        # 2 => sid
+        data[row[0]] ||= {}
+        data[row[0]][busy_phone] ||= busy_sid
+        data[row[0]][row[1]] = row[2]
+
+        # phone_for
+        data[row[2]] = row[1]
       end
     end
     @data = data
   end
 
-  def self.sid_for(phone)
-    sid = data[phone]
+  def self.extract_campaign_id(url)
+    uri = URI.parse(url)
+    tuples = uri.query.split('&')
+    target = tuples.find{|tuple| tuple =~ /campaign_id/}
+    if target
+      target.split('=').last
+    else
+      throw "EXTRACT: No target for URL[#{url}]"
+    end
+  end
+
+  def self.sid_for(url, phone)
+    campaign_id = extract_campaign_id(url)
+    sid = data[campaign_id][phone]
     sid.nil? ? busy_sid : sid
   end
 
   def self.phone_for(sid)
-    target = data.find{|phone,_sid| _sid == sid}
+    target = data[campaign_id].find{|phone,_sid| _sid == sid}
     target.nil? ? busy_phone : target.first
   end
 end
