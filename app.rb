@@ -27,18 +27,20 @@ post '/*' do
   #if pool.sample == 1
   #  template = :dial_error
   #end
-  p "SID[#{@sid}] Phone[#{@to}]"
+  p "DIALING: SID[#{@sid}] Phone[#{@to}]"
   erb template
 end
 
 get '/2010-04-01/Accounts/AC422d17e57a30598f8120ee67feae29cd/Calls/:sid' do
+  phone = Dials.phone_for(params[:sid])
+  p "FETCHING: SID[#{params[:sid]}] Phone[#{phone}]"
   builder do |xml|
     xml.instruct!
     xml.TwilioResponse do
       xml.Call do
         xml.Sid params[:sid]
         xml.AccountSid Dials.account_sid
-        xml.To Dials.phone_for(params[:sid])
+        xml.To phone
         xml.From Dials.from
         xml.PhoneNumberSid 'PH123abc'
         xml.Status 'completed'
