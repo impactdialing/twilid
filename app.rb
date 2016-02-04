@@ -27,7 +27,7 @@ post '/*' do
   #if pool.sample == 1
   #  template = :dial_error
   #end
-  p "DIALING: SID[#{@sid}] Phone[#{@to}]"
+  p "DIALING: SID[#{@sid}] Phone[#{@to}] Params[#{params}]"
   erb template
 end
 
