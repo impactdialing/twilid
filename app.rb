@@ -53,6 +53,8 @@ end
 get '/' do
   if params[:phone]
     Dials.sid_for(params[:phone])
+  elsif params[:sid]
+    Dials.phone_for(params[:sid])
   else
     "{\"code\":#{Dials.data.keys.size.to_s}}"
   end
